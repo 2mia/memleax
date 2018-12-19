@@ -73,6 +73,7 @@ static void do_breakpoint_init(pid_t pid, struct breakpoint_s *bp,
 
 	/* write the trap instruction 'int 3' into the address */
 	set_breakpoint(pid, bp->entry_address, bp->entry_code);
+	log_debug("set bp %d %x %x\n" , pid, bp->entry_address, malloc);
 }
 
 void breakpoint_init(pid_t pid)
@@ -102,3 +103,5 @@ struct breakpoint_s *breakpoint_by_entry(uintptr_t address)
 	}
 	return NULL;
 }
+
+// vim: noexpandtab

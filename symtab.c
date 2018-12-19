@@ -66,6 +66,9 @@ static int symtab_build_section(Elf *elf, Elf_Scn *section,
 		sym->address = esym.st_value - base_addr + offset;
 		sym->size = esym.st_size;
 		sym->weak = (GELF_ST_BIND(esym.st_info) == STB_WEAK);
+ 
+		if (strcmp(sym->name, "malloc") == 0)
+			log_debug("create sym_table %s %x\n", sym->name, sym->address);
 
 		count++;
 	}
@@ -176,6 +179,10 @@ const char *symtab_by_address(uintptr_t address, int *offset)
 
 uintptr_t symtab_by_name(const char *name)
 {
+	// if (strcmp(name, "malloc") == 0)
+	// 	return malloc;
+	// if (strcmp(name, "free") == 0)
+	// 	return free;
 	uintptr_t address = 0;
 	struct symbol_s *sym;
 	array_for_each(sym, &g_symbol_table) {
@@ -190,3 +197,4 @@ uintptr_t symtab_by_name(const char *name)
 	}
 	return address;
 }
+// vim: noexpandtab
