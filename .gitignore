@@ -1,6 +1,4 @@
 *.o
 *.tar.gz
 memleax
-Makefile
-.vscode/settings.json
 .vscode/settings.json
