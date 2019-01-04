@@ -3,6 +3,7 @@
 #include <unistd.h>
 #include <signal.h>
 #include <pthread.h>
+#include <sys/mman.h>
 
 static void *thread_func(void *ptr) {
     sleep(1);
@@ -21,6 +22,20 @@ static void handler(int signum) {
         case SIGUSR1:{
             printf("\tcalling malloc\n");
             char *ptr = malloc(1024);
+            
+            printf("\tcalling memalign\n");
+            char *ptr2;
+            posix_memalign(&ptr2, 16, 768);
+            
+            printf("\tcalling mmap\n");
+            char *ptr3 = mmap(NULL, 512, PROT_READ | PROT_WRITE, MAP_PRIVATE | MAP_ANON, -1, 0);
+            char *ptr4 = mmap(ptr3, 1024, PROT_READ | PROT_WRITE, MAP_PRIVATE | MAP_ANON | MAP_FIXED, -1, 0);
+
+            printf("calling frees\n");
+            free(ptr);
+            free(ptr2);
+            munmap(ptr4, 1024);
+
             pthread_t thread;
             pthread_create(&thread, NULL, thread_func, NULL);
             break;

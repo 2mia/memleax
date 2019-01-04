@@ -174,7 +174,7 @@ int main(int argc, char * const *argv)
 	time_t next, begin = time(NULL);
 	struct breakpoint_s *bp = NULL;
 	uintptr_t return_address = 0, return_code = 0;
-	uintptr_t arg1 = 0, arg2 = 0;
+	uintptr_t arg1 = 0, arg2 = 0, arg3 = 0, arg4 = 0, arg5 = 0, arg6 = 0;
 	pid_t last_thread = 0;
 	pid_t hold_threads[1000];
 	int hold_thread_num = 0;
@@ -275,7 +275,7 @@ int main(int argc, char * const *argv)
 			g_current_thread = pid;
 
 			return_address = 0;
-			if (bp->handler(call_return_value(&regs), arg1, arg2) != 0) {
+			if (bp->handler(call_return_value(&regs), arg1, arg2, arg3, arg4, arg5, arg6) != 0) {
 				printf("\n== Not enough memory.\n");
 				break;
 			}
@@ -300,6 +300,10 @@ int main(int argc, char * const *argv)
 			/* save arguments */
 			arg1 = call_arg1(pid, &regs);
 			arg2 = call_arg2(pid, &regs);
+			arg3 = call_arg3(pid, &regs);
+			arg4 = call_arg4(pid, &regs);
+			arg5 = call_arg5(pid, &regs);
+			arg6 = call_arg6(pid, &regs);
 
 			last_thread = pid;
 
